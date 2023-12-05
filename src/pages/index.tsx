@@ -14,12 +14,17 @@ const roboto = Roboto({
     subsets: ['latin'],
 })
 
+interface ErrorState {
+    message: string;
+}
+
 // Componente principal Home
 export default function Home() {
 
     // Estados para manejar los datos
     const [isMounted, setIsMounted] = useState(false);
     const [isCelsius, setIsCelsius] = useState(true);
+    const [error, setError] = useState<ErrorState | null>(null); // Estado para almacenar el error
     const [inputLocation, setInputLocation] = useState('Málaga'); // Estado para almacenar la ubicación ingresada // Ubicación por defecto
     const [data, setData] = useState<WeatherData>(
         {
@@ -77,20 +82,34 @@ export default function Home() {
     const fetchData = async () => {
         try {
             const result = await getData(inputLocation); // Llama a la función para obtener los datos
-            setData(result.data); // Establece los datos en el estado del componente
-            console.log(result);
+            if (result.data.cod == 200) {
+                setData(result.data); // Establece los datos en el estado del componente
+                setError(null); // Limpia el estado de error si la solicitud tiene éxito
+                console.log(result);
+            } else {
+                throw new Error('Ubicación no válida');
+            }
         } catch (error) {
+            setError({ message: 'Ubicación no válida.' }); // Establecer el error en el estado
             console.error('Error al obtener los datos:', error);
+            console.log('Error establecido:', error); // Añadir esta línea para verificar si se establece el estado de error
         }
     };
 
     const fetchHourlyData = async () => {
         try {
             const result = await getHourlyData(inputLocation); // Llama a la función para obtener los datos
-            setHourlyData(result.data);  // Establece los datos en el estado del componente
-            console.log(result);
+            if (result.data.cod == 200) {
+                setHourlyData(result.data); // Establece los datos en el estado del componente
+                setError(null); // Limpia el estado de error si la solicitud tiene éxito
+                console.log(result);
+            } else {
+                throw new Error('Ubicación no válida');
+            }
         } catch (error) {
+            setError({ message: 'Ubicación no válida.' }); // Establecer el error en el estado
             console.error('Error al obtener los datos:', error);
+            console.log('Error establecido:', error); // Añadir esta línea para verificar si se establece el estado de error
         }
     };
 
@@ -141,10 +160,10 @@ export default function Home() {
         const now: Date = new Date();
         const timezoneOffsetInMilliseconds: number = timezoneOffsetInSeconds * 1000; // Convert to milliseconds
         const localTime: Date = new Date(now.getTime() + timezoneOffsetInMilliseconds);
-    
+
         const hours: string = (localTime.getHours() < 10 ? '0' : '') + localTime.getHours();
         const minutes: string = (localTime.getMinutes() < 10 ? '0' : '') + localTime.getMinutes();
-    
+
         return `${hours}:${minutes}`;
     }
 
@@ -189,67 +208,70 @@ export default function Home() {
                         <a onClick={handleFahrenheitClick} className={styles.myButton}>ºF</a>
                     </div>
                 </div>
-                <div className={styles.simpleDataBar}>
-                    <div className={styles.overwiewData}>
-                        <div className={styles.cityData}>
-                            <h2 id="temperature">{isCelsius ? kelvinToCelsius(data.main.temp) : kelvinToFahrenheit(data.main.temp)}º</h2>
-                            <div className={styles.nameAndTime}>
-                                <span>{data.name}</span>
-                                <span>{getCurrentTimeInTimeZone(data.timezone)}</span>
+                {error ?
+                    <div>Error: {error.message}</div>
+                    :
+                    <div className={styles.simpleDataBar}>
+                        <div className={styles.overwiewData}>
+                            <div className={styles.cityData}>
+                                <h2 id="temperature">{isCelsius ? kelvinToCelsius(data.main.temp) : kelvinToFahrenheit(data.main.temp)}º</h2>
+                                <div className={styles.nameAndTime}>
+                                    <span>{data.name}</span>
+                                    <span>{getCurrentTimeInTimeZone(data.timezone)}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className={styles.forecastStatus}>
-                            <div className={styles.sunOrWind}>
-                                <Image
-                                    loader={() => `https://openweathermap.org/img/wn/${data.weather.map(e => e.icon)}@2x.png`}
-                                    src={`https://openweathermap.org/img/wn/${data.weather.map(e => e.icon)}@2x.png`}
-                                    width={50}
-                                    height={50}
-                                    unoptimized
-                                    alt="Picture of the author"
-                                    className={styles.picture}
-                                />
-                                <span>{data.weather.map(e => e.main)}</span>
-                            </div>
-                            <div className={styles.sunOrWind}>
-                                <Image
-                                    src="/wind-solid.svg"
-                                    width={30}
-                                    height={30}
-                                    unoptimized
-                                    alt="Picture of the author"
-                                    className={styles.picture}
-                                />
-                                <span>{data.wind.speed} m/s</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span>Feels like: {isCelsius ? kelvinToCelsius(data.main.feels_like) : kelvinToFahrenheit(data.main.feels_like)} ºC</span>
-                            <span>{isCelsius ? kelvinToCelsius(data.main.temp_min) : kelvinToFahrenheit(data.main.temp_min)}º to {isCelsius ? kelvinToCelsius(data.main.temp_max) : kelvinToFahrenheit(data.main.temp_max)}º</span>
-                        </div>
-                    </div>
-                    <div className={styles.hoursForecast}>
-                        {
-                            hourlyData.list.slice(0, 9).map((e, index) =>
-                                <div key={index.toString()}>
-                                    <span>{getCurrentTimeInTimeZone(e.dt)}</span>
-                                    <hr />
+                            <div className={styles.forecastStatus}>
+                                <div className={styles.sunOrWind}>
                                     <Image
-                                        loader={() => `https://openweathermap.org/img/wn/${e.weather.map(e => e.icon)}@2x.png`}
-                                        src={`https://openweathermap.org/img/wn/${e.weather.map(e => e.icon)}@2x.png`}
+                                        loader={() => `https://openweathermap.org/img/wn/${data.weather.map(e => e.icon)}@2x.png`}
+                                        src={`https://openweathermap.org/img/wn/${data.weather.map(e => e.icon)}@2x.png`}
                                         width={50}
                                         height={50}
                                         unoptimized
                                         alt="Picture of the author"
                                         className={styles.picture}
                                     />
-                                    <span>{e.weather.map(x => x.main)}</span>
-                                    <h2>{isCelsius ? kelvinToCelsius(e.main.temp) : kelvinToFahrenheit(e.main.temp)}º</h2>
+                                    <span>{data.weather.map(e => e.main)}</span>
                                 </div>
-                            )
-                        }
-                    </div>
-                </div>
+                                <div className={styles.sunOrWind}>
+                                    <Image
+                                        src="/wind-solid.svg"
+                                        width={30}
+                                        height={30}
+                                        unoptimized
+                                        alt="Picture of the author"
+                                        className={styles.picture}
+                                    />
+                                    <span>{data.wind.speed} m/s</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span>Feels like: {isCelsius ? kelvinToCelsius(data.main.feels_like) : kelvinToFahrenheit(data.main.feels_like)} ºC</span>
+                                <span>{isCelsius ? kelvinToCelsius(data.main.temp_min) : kelvinToFahrenheit(data.main.temp_min)}º to {isCelsius ? kelvinToCelsius(data.main.temp_max) : kelvinToFahrenheit(data.main.temp_max)}º</span>
+                            </div>
+                        </div>
+                        <div className={styles.hoursForecast}>
+                            {
+                                hourlyData.list.slice(0, 9).map((e, index) =>
+                                    <div key={index.toString()}>
+                                        <span>{getCurrentTimeInTimeZone(e.dt)}</span>
+                                        <hr />
+                                        <Image
+                                            loader={() => `https://openweathermap.org/img/wn/${e.weather.map(e => e.icon)}@2x.png`}
+                                            src={`https://openweathermap.org/img/wn/${e.weather.map(e => e.icon)}@2x.png`}
+                                            width={50}
+                                            height={50}
+                                            unoptimized
+                                            alt="Picture of the author"
+                                            className={styles.picture}
+                                        />
+                                        <span>{e.weather.map(x => x.main)}</span>
+                                        <h2>{isCelsius ? kelvinToCelsius(e.main.temp) : kelvinToFahrenheit(e.main.temp)}º</h2>
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>}
             </main>
         </>
     )
