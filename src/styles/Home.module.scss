@@ -1,0 +1,166 @@
+.weatherApp {
+    display: flex;
+    flex-flow: column;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1024px;
+}
+
+.searchBar {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+}
+
+.cssInput {
+    padding: 10px;
+    font-size: 15px;
+    text-align: center;
+    border-width: 0px;
+    border-radius: 50px;
+    background-color: #463e59;
+    color: #ffffff;
+}
+
+.cssInput:focus {
+    outline: none;
+    border: 1px solid #6879b0;
+}
+
+.cssInput::placeholder {
+    color: white;
+    opacity: 0.8;
+}
+
+.searchContainer {
+    position: relative;
+}
+
+.searchBox {
+    padding-right: 30px; /* Ajusta el padding derecho para que el botón se ajuste */
+}
+
+.searchButton {
+    position: absolute;
+    top: 4px;
+    right: 7px;
+    padding: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.buttonsBox {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 10px;
+}
+
+.simpleDataBar {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.overwiewData {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    background-color: #463e59;
+    border-radius: 1rem;
+    padding: 1rem;
+    gap: 1.5rem;
+    color: white;
+}
+
+.overwiewData > div {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.overwiewData > .cityData {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.overwiewData > .cityData > h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.overwiewData > .cityData > .nameAndTime {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.overwiewData > .forecastStatus {
+    display: flex;
+    flex-flow: row;
+    gap: 2rem;
+}
+
+.overwiewData > .forecastStatus > .sunOrWind {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.hoursForecast {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.hoursForecast > div {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    background-color: #463e59;
+    border-radius: 1rem;
+    padding: 1rem;
+    color: white;
+    gap: 10px;
+}
+
+.hoursForecast > div > hr {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 1px solid white;
+}
+
+.myButton {
+    background-color: #463e59;
+    color: white;
+    border-radius: 31px;
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px 10px;
+    text-decoration: none;
+    text-shadow: 0px 0px 0px #463e59;
+}
+
+.myButton:hover {
+    background-color: #6879b0;
+    transition: 0.5s;
+}
+
+.myButton:active {
+    position: relative;
+    top: 1px;
+}
+
+.picture {
+    filter: invert(100%) brightness(200%);
+}
