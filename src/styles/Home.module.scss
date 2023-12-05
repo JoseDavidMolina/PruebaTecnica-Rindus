@@ -164,3 +164,15 @@
 .picture {
     filter: invert(100%) brightness(200%);
 }
+
+.errorBox {
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #463e59;
+    border-radius: 1rem;
+    padding: 1rem;
+    color: white;
+}

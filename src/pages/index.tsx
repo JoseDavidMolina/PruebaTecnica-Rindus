@@ -203,13 +203,13 @@ export default function Home() {
                         </button>
                     </div>
 
-                    <div className={styles.buttonsBox}>
+                    {error ? <></> : <div className={styles.buttonsBox}>
                         <a onClick={handleCelsiusClick} className={styles.myButton}>ºC</a>
                         <a onClick={handleFahrenheitClick} className={styles.myButton}>ºF</a>
-                    </div>
+                    </div>}
                 </div>
                 {error ?
-                    <div>Error: {error.message}</div>
+                    <div className={styles.errorBox}><h2 className={styles.errorText}>{error.message}</h2></div>
                     :
                     <div className={styles.simpleDataBar}>
                         <div className={styles.overwiewData}>
