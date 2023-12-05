@@ -85,14 +85,12 @@ export default function Home() {
             if (result.data.cod == 200) {
                 setData(result.data); // Establece los datos en el estado del componente
                 setError(null); // Limpia el estado de error si la solicitud tiene éxito
-                console.log(result);
             } else {
                 throw new Error('Ubicación no válida');
             }
         } catch (error) {
             setError({ message: 'Ubicación no válida.' }); // Establecer el error en el estado
             console.error('Error al obtener los datos:', error);
-            console.log('Error establecido:', error); // Añadir esta línea para verificar si se establece el estado de error
         }
     };
 
@@ -102,14 +100,12 @@ export default function Home() {
             if (result.data.cod == 200) {
                 setHourlyData(result.data); // Establece los datos en el estado del componente
                 setError(null); // Limpia el estado de error si la solicitud tiene éxito
-                console.log(result);
             } else {
                 throw new Error('Ubicación no válida');
             }
         } catch (error) {
             setError({ message: 'Ubicación no válida.' }); // Establecer el error en el estado
             console.error('Error al obtener los datos:', error);
-            console.log('Error establecido:', error); // Añadir esta línea para verificar si se establece el estado de error
         }
     };
 
@@ -128,7 +124,6 @@ export default function Home() {
 
     useEffect(() => {
         fetchHourlyData();
-        console.log(hourlyData.list.slice(0, 6)) // Invoca la función para obtener los datos al montar el componente en el cliente
     }, []);
 
     // Funciones para cambiar entre Celsius y Fahrenheit y guardar la preferencia en cookies
