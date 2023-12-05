@@ -198,7 +198,7 @@ export default function Home() {
                         </button>
                     </div>
 
-                    {error ? <></> : <div className={styles.buttonsBox}>
+                    {!error && <div className={styles.buttonsBox}>
                         <a onClick={handleCelsiusClick} className={styles.myButton}>ºC</a>
                         <a onClick={handleFahrenheitClick} className={styles.myButton}>ºF</a>
                     </div>}
