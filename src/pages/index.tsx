@@ -231,7 +231,7 @@ export default function Home() {
                     <div className={styles.hoursForecast}>
                         {
                             hourlyData.list.slice(0, 9).map((e, index) =>
-                                <div id={index.toString()}>
+                                <div key={index.toString()}>
                                     <span>{getCurrentTimeInTimeZone(e.dt)}</span>
                                     <hr />
                                     <Image
