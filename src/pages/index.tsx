@@ -137,11 +137,15 @@ export default function Home() {
     }
 
     // Funciones para obtener la hora en una zona horaria
-    function getCurrentTimeInTimeZone(timezoneOffsetInSeconds: number) {
-        const now = new Date();
-        const timezoneOffsetInMilliseconds = timezoneOffsetInSeconds * 1000; // Convert to milliseconds
-        const localTime = new Date(now.getTime() + timezoneOffsetInMilliseconds);
-        return `${localTime.getHours()}:${localTime.getMinutes()}`;
+    function getCurrentTimeInTimeZone(timezoneOffsetInSeconds: number): string {
+        const now: Date = new Date();
+        const timezoneOffsetInMilliseconds: number = timezoneOffsetInSeconds * 1000; // Convert to milliseconds
+        const localTime: Date = new Date(now.getTime() + timezoneOffsetInMilliseconds);
+    
+        const hours: string = (localTime.getHours() < 10 ? '0' : '') + localTime.getHours();
+        const minutes: string = (localTime.getMinutes() < 10 ? '0' : '') + localTime.getMinutes();
+    
+        return `${hours}:${minutes}`;
     }
 
     const handleSearch = () => {
