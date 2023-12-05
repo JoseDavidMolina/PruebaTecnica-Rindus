@@ -37,5 +37,8 @@ Here you can explain how to use or run your project once it's installed. For exa
 To run the project in a development environment:
 npm start
 
+To test the app on live
+https://prueba-tecnica-rindus.vercel.app/
+
 Contact
 If you have any questions or suggestions, feel free to contact me via josedam90@gmail.com
