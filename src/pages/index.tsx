@@ -1,5 +1,3 @@
-'use client'
-
 // Importación de módulos y estilos
 import styles from '../styles/Home.module.scss'
 import Image from 'next/image'
